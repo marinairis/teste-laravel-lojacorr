@@ -1,16 +1,16 @@
 ## Teste Laravel
 
-![teste-laravel](teste-lojacorr/resources/img/teste-laravel.png)
+![teste-laravel](/resources/img/teste-laravel.png)
 
 ### Larave (API)
 
 - Primeiro rode o comando `php artisa serve`, para acessar a rota api.
 
-- Rota com `*todas*` as Categorias `/api/categories`, método `GET`.
-- Rota para `*adicionar*` uma Categorias `/api/categories`, método `POST`.
-- Rota para `*acessar uma*` Categoria `/api/categories/{id}`, método `GET`.
-- Rota para `*atualizar*` uma Categoria `/api/categories/{id}`, método `PUT`.
-- Rota para `*deletar*` uma Categoria `/api/categories/{id}, método `DELETE`.
+- Rota com `todas` as Categorias `/api/categories`, método `GET`.
+- Rota para `adicionar` uma Categorias `/api/categories`, método `POST`.
+- Rota para `acessar uma` Categoria `/api/categories/{id}`, método `GET`.
+- Rota para `atualizar` uma Categoria `/api/categories/{id}`, método `PUT`.
+- Rota para `deletar` uma Categoria `/api/categories/{id}, método `DELETE`.
 
 
 ### Problema
