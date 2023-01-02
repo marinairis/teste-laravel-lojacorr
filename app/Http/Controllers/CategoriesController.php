@@ -4,65 +4,69 @@ namespace App\Http\Controllers;
 
 use App\Models\Categories as Categories;
 use App\Http\Resources\Categories as CategoriesResource;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreCategoriesRequest;
 
 class CategoriesController extends Controller
 {
     public function index()
     {
-        // $categories = Categories::paginate(10);
-        $categories = Categories::get()->toJson(JSON_PRETTY_PRINT);
+        $categories = Categories::get();
 
-        return response($categories, 200);
-        // return CategoriesResource::collection($categories);
-    }
+        if($categories->isEmpty()){
+            return response()->json([
+                "message" => "Nenhuma categoria cadastrada."
+            ], 200);
+        }
 
-    public function create()
-    {
-        //
+        return new CategoriesResource($categories->toJson(JSON_PRETTY_PRINT));
     }
 
     public function show($id)
     {
-        $categories = Categories::findOrFail($id);
+        $categories = Categories::where('id', $id);
 
-        return new CategoriesResource($categories);
+        if(! $categories->exists()){
+            return response()->json([
+                "message" => "Categoria não encontrada."
+            ], 404);
+        }
+
+        return new CategoriesResource($categories->find($id));
     }
 
-    public function store(Request $request)
+    public function store(StoreCategoriesRequest $request)
     {
         $categorie = new Categories;
         $categorie->name = $request->name;
         $categorie->save();
 
         return response()->json([
-            "success" => "Categorie created",
+            "success" => "Categoria criada com sucesso.",
             "data" => new CategoriesResource($categorie),
         ]);
     }
 
 
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
+    public function update(StoreCategoriesRequest $request, $id)
     {
         $categorie = Categories::findOrFail($request->id);
-        $categorie->name = $request->input('name');
+        $categorie->name = $request->name;
+        $categorie->save();
 
-        if ($categorie->save()){
-            return new CategoriesResource($categorie);
-        }
+        return response()->json([
+            "success" => "Categoria atualizada com sucesso..",
+            "data" => new CategoriesResource($categorie),
+        ]);
     }
 
-    public function destroy($id)
+    public function delete($id)
     {
         $categorie = Categories::findOrFail($id);
+        $categorie->delete();
 
-        if ($categorie->delete()) {
-            return new CategoriesResource($categorie);
-        }
+        return response()->json([
+            "deleted" => "Categoria deleteda com sucesso.",
+            "data" => new CategoriesResource($categorie),
+        ]);
     }
 }
