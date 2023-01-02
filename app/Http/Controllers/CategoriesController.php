@@ -18,7 +18,7 @@ class CategoriesController extends Controller
             ], 200);
         }
 
-        return new CategoriesResource($categories->toJson(JSON_PRETTY_PRINT));
+        return response($categories->toJson(JSON_PRETTY_PRINT), 200);
     }
 
     public function show($id)
@@ -27,7 +27,7 @@ class CategoriesController extends Controller
 
         if(! $categories->exists()){
             return response()->json([
-                "message" => "Categoria não encontrada."
+                "message" => "Categoria nao encontrada."
             ], 404);
         }
 
@@ -61,12 +61,18 @@ class CategoriesController extends Controller
 
     public function delete($id)
     {
-        $categorie = Categories::findOrFail($id);
+        $categorie = Categories::where('id', $id);
+
+        if(! $categorie->exists()){
+            return response()->json([
+                "message" => "Categoria nao encontrada."
+            ], 404);
+        }
+
         $categorie->delete();
 
         return response()->json([
             "deleted" => "Categoria deleteda com sucesso.",
-            "data" => new CategoriesResource($categorie),
         ]);
     }
 }
